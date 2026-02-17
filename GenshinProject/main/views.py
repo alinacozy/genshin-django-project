@@ -1,8 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("<h4>hello world.. ооо винки пивет</h4>")
+     data = {
+        'title': 'Главная страница',
+        'values': ['alina', 'winky', 'cozy'],
+        'obj': {
+            'name': 'Winky',
+            'age': 3,
+            'sex': "female",
+        }
+     }
+     return render(request, 'main/index.html', data)
 
 def about(request):
-    return HttpResponse("Данный проект будет посвящен помощи в расчетах для игры Genshin Impact")
+    return render(request, 'main/about.html')

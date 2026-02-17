@@ -1,0 +1,19 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>{{ title }}</h1>
+    <p>hello world.. ооо винки пивет</p>
+    <a class="btn btn-warning" href="{% url 'about' %}">{% filter upper %} На страницу про нас {% endfilter %}</a>
+
+    <h3>Список переменных для примера.</h3>
+    {% for el in values %}
+        <p>{{ el | upper }}</p>
+    {% endfor %}
+    {% if obj.age > 2 %}
+        {{obj.age}}
+    {% endif %}
+</div>
+{% endblock %}
