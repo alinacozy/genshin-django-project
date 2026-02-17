@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.whl
+.coverage
+.tox
+
+# Django
+*.log
+*.pot
+local_settings.py
+db.sqlite3  # Ignore if using SQLite as a local development database
+/static/    # Ignore collected static files if generated during deployment and not source-controlled
+/media/     # Ignore user-uploaded media files
+
+# Environment variables
+.env
+.flaskenv
+
+# IDE-specific files (optional, depends on your IDE)
+.idea/      # PyCharm
+
+.vscode/    # VS Code
+.DS_Store   # macOS
+Thumbs.db   # Windows
