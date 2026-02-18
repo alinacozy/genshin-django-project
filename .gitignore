@@ -37,8 +37,19 @@ db.sqlite3  # Ignore if using SQLite as a local development database
 .flaskenv
 
 # IDE-specific files (optional, depends on your IDE)
-.idea/      # PyCharm
+/.idea/      # PyCharm
 
 .vscode/    # VS Code
 .DS_Store   # macOS
 Thumbs.db   # Windows
+
+#База данных
+/GenshinProject/db.sqlite3
+
+# idea
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/GenshinProject.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
