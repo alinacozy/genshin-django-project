@@ -10,9 +10,21 @@
     <p>Имя: {{ user.username }}</p>
     <img src="{% static 'main/img/winky.png' %}" alt="winky" class="profile-winky">
     <span>Винки говорит: пивет, {{ user.username }}</span>
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button class="btn btn-danger" type="submit">Выйти</button>
-    </form>
+
+    <div class="profile-buttons">
+        <div class="profile-button">
+            <form method="post" action="{% url 'password_change' %}">
+                {% csrf_token %}
+                <button class="btn btn-warning" type="submit">Сменить пароль</button>
+            </form>
+        </div>
+        <div class="profile-button">
+            <form method="post" action="{% url 'logout' %}" class="profile-button">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">Выйти</button>
+            </form>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

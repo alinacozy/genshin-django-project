@@ -53,3 +53,14 @@ body {
     padding:50px 20px;
   }
 }
+
+.additional-button {
+  border-radius:30px;
+  padding:10px 20px;
+  font-size:18px;
+  font-weight:bold;
+  background-color:#AA336A;
+  border:none;
+  color:white;
+  margin-top: 10px;
+}

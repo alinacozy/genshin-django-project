@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
 </head>
 <body>
-<a class="btn btn-primary btn-block additional-button" href="{% url 'register' %}">Регистрация</a>
+<a class="btn btn-primary btn-block additional-button" href="{% url 'login' %}">Вход</a>
     <div class="registration-cssave">
         <form method="post">
             {% csrf_token %}
-            <h3 class="text-center">Форма входа</h3>
+            <h3 class="text-center">Форма регистрации</h3>
             <div class="form-group">
                 <input class="form-control item" type="text" name="username" maxlength="15" minlength="4" pattern="^[a-zA-Z0-9_.-]*$" id="username" placeholder="Логин" required>
             </div>
             <div class="form-group">
-                <input class="form-control item" type="password" name="password" minlength="6" id="password" placeholder="Пароль" required>
+                <input class="form-control item" type="password" name="password1" minlength="6" id="password1" placeholder="Пароль" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control item" type="password" name="password2" minlength="6" id="password2" placeholder="Повторите пароль" required>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-block create-account" type="submit">Вход в аккаунт</button>

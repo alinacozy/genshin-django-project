@@ -65,3 +65,13 @@ form {
 .profile-winky {
     width:100px;
 }
+
+.profile-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-button {
+    display: flex;
+    margin-left: 0%;
+}
