@@ -1,0 +1,18 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block title %} Профиль {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Профиль</h1>
+    <p>Имя: {{ user.username }}</p>
+    <img src="{% static 'main/img/winky.png' %}" alt="winky" class="profile-winky">
+    <span>Винки говорит: пивет, {{ user.username }}</span>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Выйти</button>
+    </form>
+</div>
+{% endblock %}

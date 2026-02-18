@@ -1,0 +1,18 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Список персонажей {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Список персонажей</h1>
+    {% for ch in characters %}
+        <div class="alert alert-warning">
+            <h3>{{ ch.name }}</h3>
+            <p>{{ch.get_element_display}}</p>
+            <p>{{ch.get_region_display}}</p>
+        </div>
+    {% endfor %}
+    <p>эмбер, кейа, лиза.. ооо винки пивет</p>
+    <a class="btn btn-warning" href="{% url 'about' %}">{% filter upper %} На страницу про нас {% endfilter %}</a>
+</div>
+{% endblock %}

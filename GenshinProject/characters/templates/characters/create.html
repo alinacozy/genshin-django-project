@@ -1,0 +1,21 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Форма по добавлению нового персонажа {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Форма по добавлению нового персонажа</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}<br>
+            </div>
+        {% endfor %}
+
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </form>
+    <span>{{ error }}</span>
+</div>
+{% endblock %}

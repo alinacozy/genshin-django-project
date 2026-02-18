@@ -55,3 +55,13 @@ main .features {
 main .features h3 {
      margin-top: 20px;
 }
+
+form {
+    margin-left:25%;
+    width:500px;
+    margin-top:50px;
+}
+
+.profile-winky {
+    width:100px;
+}
