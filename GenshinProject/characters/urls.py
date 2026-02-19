@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/update', views.CharacterUpdateView.as_view(), name='character_update' ),
     path('calculate/', views.calculate, name='calculate' ),
     path('my/', views.my_characters, name='my_characters' ),
+    path('add_my/', views.add_my_character, name='add_my_character' ),
 ]

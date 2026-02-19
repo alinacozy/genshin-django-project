@@ -78,6 +78,16 @@ class UserCharacter(models.Model):
             raise ValueError("Нужно ровно 3 числа (1-10)")
         self.talent_levels = [max(1, min(10, int(x))) for x in levels]
 
+    def get_target_talent_levels(self):
+        """Получить целевые уровни как список"""
+        return self.target_talent_levels or []
+
+    def set_target_talent_levels(self, levels):
+        """Установить целевые уровни [normal, skill, burst]"""
+        if len(levels) != 3:
+            raise ValueError("Нужно ровно 3 числа (1-10)")
+        self.target_talent_levels = [max(1, min(10, int(x))) for x in levels]
+
     def __str__(self):
         return f"{self.name}, {self.level} ур."
 

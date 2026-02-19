@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Character, UserCharacter
-from .forms import CharacterForm
+from .forms import CharacterForm, UserCharacterForm
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
 
@@ -48,3 +48,34 @@ def calculate(request):
 def my_characters(request):
     characters = UserCharacter.objects.filter(user=request.user)
     return render(request, 'characters/my_characters.html', {'characters': characters})
+
+
+@login_required
+def add_my_character(request):
+    error=''
+    if request.method == "POST":
+        form = UserCharacterForm(request.POST, user=request.user)
+        if form.is_valid():
+            character=form.save(commit=False)
+            character.user=request.user
+            character.set_talent_levels([
+                form.cleaned_data['talent1'],
+                form.cleaned_data['talent2'],
+                form.cleaned_data['talent3']
+            ])
+            character.set_target_talent_levels([
+                form.cleaned_data['target1'],
+                form.cleaned_data['target2'],
+                form.cleaned_data['target3']
+            ])
+            character.save()
+            return redirect('/characters')
+        else:
+            error=form.errors
+
+    form=UserCharacterForm(user=request.user)
+    data={
+        'form':form,
+        'error':error
+    }
+    return render(request, 'characters/create.html', data)
