@@ -1,0 +1,18 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Подсчет материалов {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Мои персонажи</h1>
+    {% for ch in characters %}
+        <div class="alert alert-warning">
+            <h3>{{ ch.name }}</h3>
+            <p>Уровень: {{ch.level}}</p>
+            <p>Уровни талантов: {{ch.talent_levels}}</p>
+            <p>Целевые уровни талантов: {{ch.target_talent_levels}}</p>
+        </div>
+    {% endfor %}
+    <a class="btn btn-warning" href="{% url 'calculate' %}">{% filter upper %} В калькулятор {% endfilter %}</a>
+</div>
+{% endblock %}

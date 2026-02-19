@@ -1,0 +1,13 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Подсчет материалов {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h3>Такие материалы нужны, чтобы прокачать моих персонажей</h3>
+    <div>
+    {{materials}}
+    </div>
+    <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
+</div>
+{% endblock %}
