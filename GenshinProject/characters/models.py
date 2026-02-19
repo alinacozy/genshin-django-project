@@ -53,7 +53,7 @@ class Character(models.Model):
 
     def get_mob_materials(self):
         """Получить все 3 материала моба"""
-        return self.mob.materials.order_by('rarity')
+        return MobMaterial.objects.filter(mob_name=self.mob)
 
     def get_talent_materials(self):
         """
@@ -157,7 +157,7 @@ class Stone(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.get_element_display()})'
 
     class Meta:
         verbose_name = 'Камень'

@@ -6,7 +6,18 @@
 <div class="features">
     <h3>Такие материалы нужны, чтобы прокачать моих персонажей</h3>
     <div>
-    {{materials}}
+        <h4>Материалы с мобов:</h4>
+        {{materials.mob_materials}}
+        <h4>Материалы с боссов:</h4>
+        {{materials.boss_materials}}
+        <h4>Еженедельные материалы:</h4>
+        {{materials.weekly_materials}}
+        <h4>Материалы талантов:</h4>
+        {{materials.talent_materials}}
+        <h4>Диковинки:</h4>
+        {{materials.specialties}}
+        <h4>Камни:</h4>
+        {{materials.stones}}
     </div>
     <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
 </div>
