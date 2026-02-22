@@ -1,23 +1,18 @@
 from collections import defaultdict
 import dataclasses
 
+from ..models import MobMaterial
+
+
 @dataclasses.dataclass
 class RequiredMaterials:
-    boss_materials : defaultdict = None
-    specialties : defaultdict = None
-    stones : defaultdict = None
-    mob_materials : defaultdict = None
-    weekly_materials : defaultdict = None
-    talent_materials : defaultdict = None
+    boss_materials : defaultdict = dataclasses.field(default_factory=lambda: defaultdict(int))
+    specialties : defaultdict = dataclasses.field(default_factory=lambda: defaultdict(int))
+    stones : defaultdict = dataclasses.field(default_factory=lambda: defaultdict(int))
+    mob_materials : defaultdict[MobMaterial, int] = dataclasses.field(default_factory=lambda: defaultdict(int))
+    weekly_materials : defaultdict = dataclasses.field(default_factory=lambda: defaultdict(int))
+    talent_materials : defaultdict = dataclasses.field(default_factory=lambda: defaultdict(int))
 
-    def __post_init__(self):
-        """Создаёт НОВЫЕ defaultdict каждый раз"""
-        self.boss_materials = defaultdict(int)
-        self.specialties = defaultdict(int)
-        self.stones = defaultdict(int)
-        self.mob_materials = defaultdict(int)
-        self.weekly_materials = defaultdict(int)
-        self.talent_materials = defaultdict(int)
 
     def merge_with(self, other: 'RequiredMaterials'):
         """Складывает материалы из другого RequiredMaterials"""
@@ -33,14 +28,14 @@ class RequiredMaterials:
 
 class MaterialsCalculator:
 
-    def calculate_all(self, characters):
+    def calculate_all(self, characters) -> RequiredMaterials:
         total = RequiredMaterials()
         for char in characters:
             char_mats = self.calculate_character(char)
             total.merge_with(char_mats)
         return total
 
-    def calculate_character(self, user_character):
+    def calculate_character(self, user_character) -> RequiredMaterials:
         result = RequiredMaterials()
 
         # считаем сколько возвышений уже выполнено
@@ -89,21 +84,21 @@ class MaterialsCalculator:
         return min(sum(1 for b in boundaries if b <= level), 6)
 
 
-    def _get_num_boss_materials(self, ascensions):
+    def _get_num_boss_materials(self, ascensions) -> int :
         num_boss_materials = 0
         boss_for_ascension = [0,2,4,8,12,20]
         for i in range(ascensions, 6):
             num_boss_materials += boss_for_ascension[i]
         return num_boss_materials
 
-    def _get_num_specialties(self, ascensions):
+    def _get_num_specialties(self, ascensions) -> int:
         num_specialties = 0
         specialties_for_ascension = [3,10,20,30,45,60]
         for i in range(ascensions, 6):
             num_specialties += specialties_for_ascension[i]
         return num_specialties
 
-    def _get_num_stones(self, ascensions):
+    def _get_num_stones(self, ascensions) -> defaultdict[int, int]:
         num_stones = defaultdict(int)
         stones_for_ascensions = [
             {'rarity': 2, 'count': 1},
@@ -119,7 +114,7 @@ class MaterialsCalculator:
         return num_stones
 
 
-    def _get_num_weekly_materials(self, user_character):
+    def _get_num_weekly_materials(self, user_character) -> int:
         num_weekly = 0
         weekly_for_level = [0, 0, 0, 0, 0, 0, 1, 1, 2, 2]
         for i in range(3):
@@ -127,7 +122,7 @@ class MaterialsCalculator:
                 num_weekly += weekly_for_level[level]
         return num_weekly
 
-    def _get_num_talent_materials(self, user_character):
+    def _get_num_talent_materials(self, user_character) -> defaultdict[int, int]:
         num_books = defaultdict(int)
         books_for_levels = [
             {'rarity': 2, 'count': 3}, # на 2 уровень = 0 индекс
@@ -146,7 +141,7 @@ class MaterialsCalculator:
                 num_books[books_for_level['rarity']] += books_for_level['count']
         return num_books
 
-    def _get_num_mob_materials(self, user_character, ascensions):
+    def _get_num_mob_materials(self, user_character, ascensions) -> defaultdict[int, int]:
         num_mob_materials = defaultdict(int)
 
         # --- для возвышений ---

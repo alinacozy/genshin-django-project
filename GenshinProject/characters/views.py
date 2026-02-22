@@ -4,6 +4,7 @@ from .forms import CharacterForm, UserCharacterForm
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
 
+from .services.materials_aggregator import MaterialsAggregator
 from .services.materials_calculator import MaterialsCalculator
 
 
@@ -48,11 +49,12 @@ def calculate(request):
         'stones': dict(materials.stones),
     }
 
+    aggregated = MaterialsAggregator().aggregate_materials(materials)
     data = {
         'characters': characters,
-        'materials': materials_dict
+        'materials': materials_dict,
+        'aggregated': aggregated,
     }
-
 
     return render(request, 'characters/calculate.html', data)
 
