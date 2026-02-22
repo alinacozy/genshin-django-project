@@ -3,12 +3,21 @@ import dataclasses
 
 @dataclasses.dataclass
 class RequiredMaterials:
-    boss_materials = defaultdict(int)
-    specialties = defaultdict(int)
-    stones = defaultdict(int)
-    mob_materials = defaultdict(int)
-    weekly_materials = defaultdict(int)
-    talent_materials = defaultdict(int)
+    boss_materials : defaultdict = None
+    specialties : defaultdict = None
+    stones : defaultdict = None
+    mob_materials : defaultdict = None
+    weekly_materials : defaultdict = None
+    talent_materials : defaultdict = None
+
+    def __post_init__(self):
+        """Создаёт НОВЫЕ defaultdict каждый раз"""
+        self.boss_materials = defaultdict(int)
+        self.specialties = defaultdict(int)
+        self.stones = defaultdict(int)
+        self.mob_materials = defaultdict(int)
+        self.weekly_materials = defaultdict(int)
+        self.talent_materials = defaultdict(int)
 
     def merge_with(self, other: 'RequiredMaterials'):
         """Складывает материалы из другого RequiredMaterials"""
@@ -16,7 +25,7 @@ class RequiredMaterials:
             group1 = getattr(self, field_name.name)
             group2 = getattr(other, field_name.name)
             for mat_name, count in group2.items():
-                group1.materials[mat_name] = group1.get(mat_name, 0) + count
+                group1[mat_name] = group1.get(mat_name, 0) + count
 
     def __str__(self):
         return f"{self.mob_materials}, {self.specialties}, {self.stones}, {self.talent_materials}, {self.weekly_materials}, {self.talent_materials}"
@@ -154,7 +163,7 @@ class MaterialsCalculator:
             num_mob_materials[mob_for_ascension['rarity']] += mob_for_ascension['count']
 
         # --- для талантов ---
-        self.count_ = [
+        mobs_for_levels = [
             {'rarity': 1, 'count': 6},  # на 2 уровень = 0 индекс
             {'rarity': 2, 'count': 3},  # на 3 уровень
             {'rarity': 2, 'count': 4},
@@ -165,7 +174,6 @@ class MaterialsCalculator:
             {'rarity': 3, 'count': 9},
             {'rarity': 3, 'count': 12},
         ]
-        mobs_for_levels = self.count_
         for i in range(3):
             for level in range(user_character.talent_levels[i], user_character.target_talent_levels[i]):
                mobs_for_level=mobs_for_levels[level - 1]

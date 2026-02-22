@@ -6,8 +6,26 @@
 <div class="features">
     <h3>Такие материалы нужны, чтобы прокачать моих персонажей</h3>
     <div>
-        <h4>Материалы с мобов:</h4>
-        {{materials.mob_materials}}
+        <table>
+            <tr>
+                <td><h4>Материалы с мобов:</h4></td>
+            </tr>
+
+            {% for name, count in materials.mob_materials.items %}
+            <tr>
+                <td>
+                    {{ name }}
+                </td>
+                <td>
+                    {{ count }} шт.
+                </td>
+                {% empty %}
+                    <td>Нет материалов</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
         <h4>Материалы с боссов:</h4>
         {{materials.boss_materials}}
         <h4>Еженедельные материалы:</h4>

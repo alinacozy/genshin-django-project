@@ -39,10 +39,21 @@ def calculate(request):
     characters = UserCharacter.objects.filter(user=request.user)
     calculator = MaterialsCalculator()
     materials = calculator.calculate_all(characters)
+    materials_dict = {
+        'mob_materials': dict(materials.mob_materials),
+        'boss_materials': dict(materials.boss_materials),
+        'weekly_materials': dict(materials.weekly_materials),
+        'talent_materials': dict(materials.talent_materials),
+        'specialties': dict(materials.specialties),
+        'stones': dict(materials.stones),
+    }
+
     data = {
         'characters': characters,
-        'materials': materials
+        'materials': materials_dict
     }
+
+
     return render(request, 'characters/calculate.html', data)
 
 def my_characters(request):
