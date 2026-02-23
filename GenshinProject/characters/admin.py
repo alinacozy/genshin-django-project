@@ -10,4 +10,5 @@ admin.site.register(Specialty)
 admin.site.register(Stone)
 admin.site.register(Mob)
 admin.site.register(MobMaterial)
+admin.site.register(UserInventory)
 

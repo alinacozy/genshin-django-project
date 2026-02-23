@@ -103,7 +103,7 @@ tr:hover {
     background: #FFC1CC;  /* Подсветка при наведении */
 }
 
-.talent-table {
+/* .talent-table {
     table-layout: fixed;
 }
 
@@ -117,4 +117,4 @@ tr:hover {
 .talent-table th:nth-child(4) { width: 9%; }
 
 .talent-table td:nth-child(5),
-.talent-table th:nth-child(5) { width: 9%; }
+.talent-table th:nth-child(5) { width: 9%; } */

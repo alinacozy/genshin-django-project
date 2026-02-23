@@ -40,7 +40,7 @@ def calculate(request):
     characters = UserCharacter.objects.filter(user=request.user)
     calculator = MaterialsCalculator()
     materials = calculator.calculate_all(characters)
-    aggregated = MaterialsAggregator().aggregate_materials(materials)
+    aggregated = MaterialsAggregator().aggregate_materials(materials, request_user=request.user)
     data = {
         'characters': characters,
         'aggregated': aggregated,

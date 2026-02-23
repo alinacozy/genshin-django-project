@@ -13,7 +13,10 @@
                 <th>Название материала</th>
                 <th>Редкость</th>
                 <th>Кол-во</th>
-                <th>Эквивалент материалов 1*</th>
+                <th>Эквивалент 1*</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
+                <th>Оставшийся эквивалент 1*</th>
             </tr>
             {% for mob_name, agg in aggregated.mob_materials.items %}
             <tr>
@@ -22,16 +25,25 @@
                 <td>1</td>
                 <td>{{ agg.count_1 }} шт.</td>
                 <td rowspan="3">{{ agg.equivalent }} шт.</td>
+                <td>{{ agg.count_my_1 }} шт.</td>
+                <td>{{ agg.remain_1 }} шт.</td>
+                <td rowspan="3">{{ agg.equivalent_remain }} шт.</td>
             </tr>
             <tr>
                 <td>{{ agg.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{ agg.count_2 }} шт.</td>
+
+                <td>{{ agg.count_my_2 }} шт.</td>
+                <td>{{ agg.remain_2 }} шт.</td>
             </tr>
             <tr>
                 <td>{{ agg.material_3 |default_if_none:'-' }}</td>
                 <td>3</td>
                 <td>{{ agg.count_3 }} шт.</td>
+
+                <td>{{ agg.count_my_3 }} шт.</td>
+                <td>{{ agg.remain_3 }} шт.</td>
             </tr>
             {% endfor %}
 
@@ -43,12 +55,16 @@
                 <th>Название босса</th>
                 <th>Название материала</th>
                 <th>Кол-во</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
             </tr>
-            {% for material, count in aggregated.boss_materials.items %}
+            {% for agg in aggregated.boss_materials %}
             <tr>
-                <td>{{material.boss_name}}</td>
-                <td>{{material.name}}</td>
-                <td>{{count}}</td>
+                <td>{{agg.boss_material.boss_name}}</td>
+                <td>{{agg.boss_material.name}}</td>
+                <td>{{agg.count}}</td>
+                <td>{{agg.count_my}}</td>
+                <td>{{agg.remain}}</td>
             </tr>
             {% endfor %}
         </table>
@@ -60,6 +76,9 @@
                 <th>Название материала</th>
                 <th>Кол-во</th>
                 <th>Эквивалент материалов</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
+                <th>Оставшийся эквивалент 1*</th>
             </tr>
             {% for boss_name, agg in aggregated.weekly_materials.items %}
             <tr>
@@ -67,14 +86,21 @@
                 <td>{{ agg.material_1 |default_if_none:'-' }}</td>
                 <td>{{ agg.count_1 }} шт.</td>
                 <td rowspan="3">{{ agg.equivalent }} шт.</td>
+                <td>{{ agg.count_my_1 }} шт.</td>
+                <td>{{ agg.remain_1 }} шт.</td>
+                <td rowspan="3">{{ agg.equivalent_remain }} шт.</td>
             </tr>
             <tr>
                 <td>{{ agg.material_2 |default_if_none:'-'}}</td>
                 <td>{{ agg.count_2 }} шт.</td>
+                <td>{{ agg.count_my_2 }} шт.</td>
+                <td>{{ agg.remain_2 }} шт.</td>
             </tr>
             <tr>
                 <td>{{ agg.material_3 |default_if_none:'-' }}</td>
                 <td>{{ agg.count_3 }} шт.</td>
+                <td>{{ agg.count_my_3 }} шт.</td>
+                <td>{{ agg.remain_3 }} шт.</td>
             </tr>
             {% endfor %}
 
@@ -88,8 +114,12 @@
                 <th>Название материала</th>
                 <th>Редкость</th>
                 <th>Кол-во</th>
-                <th>Эквивалент материалов 1*</th>
-                <th>Эквивалент материалов 1*</th>
+                <th>Эквивалент 1*</th>
+                <th>Эквивалент 1*</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
+                <th>Ост. эквивалент 1*</th>
+                <th>Ост. эквивалент 1*</th>
             </tr>
             {% for reg, agg_by_reg in aggregated.talent_materials.items %}
             <tr>
@@ -100,16 +130,24 @@
                 <td>{{agg_by_reg.material_monday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_monday.equivalent}}</td>
                 <td rowspan="9">{{agg_by_reg.equivalent}}</td>
+                <td>{{ agg_by_reg.material_monday.count_my_1 }}</td>
+                <td>{{ agg_by_reg.material_monday.remain_1 }}</td>
+                <td rowspan="3">{{ agg_by_reg.material_monday.equivalent_remain }}</td>
+                <td rowspan="9">{{ agg_by_reg.equivalent_remain }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_monday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_monday.count_2}}</td>
+                <td>{{ agg_by_reg.material_monday.count_my_2 }}</td>
+                <td>{{ agg_by_reg.material_monday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_monday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_monday.count_3}}</td>
+                <td>{{ agg_by_reg.material_monday.count_my_3 }}</td>
+                <td>{{ agg_by_reg.material_monday.remain_3 }}</td>
             </tr>
             <tr>
                 <td rowspan="3">ВТ</td>
@@ -117,16 +155,23 @@
                 <td>1</td>
                 <td>{{agg_by_reg.material_tuesday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_tuesday.equivalent}}</td>
+                <td>{{ agg_by_reg.material_tuesday.count_my_1 }}</td>
+                <td>{{ agg_by_reg.material_tuesday.remain_1 }}</td>
+                <td rowspan="3">{{ agg_by_reg.material_tuesday.equivalent_remain }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_tuesday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_tuesday.count_2}}</td>
+                <td>{{ agg_by_reg.material_tuesday.count_my_2 }}</td>
+                <td>{{ agg_by_reg.material_tuesday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_tuesday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_tuesday.count_3}}</td>
+                <td>{{ agg_by_reg.material_tuesday.count_my_3 }}</td>
+                <td>{{ agg_by_reg.material_tuesday.remain_3 }}</td>
             </tr>
             <tr>
                 <td rowspan="3">СР</td>
@@ -134,16 +179,23 @@
                 <td>1</td>
                 <td>{{agg_by_reg.material_wednesday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_wednesday.equivalent}}</td>
+                <td>{{ agg_by_reg.material_wednesday.count_my_1 }}</td>
+                <td>{{ agg_by_reg.material_wednesday.remain_1 }}</td>
+                <td rowspan="3">{{ agg_by_reg.material_wednesday.equivalent_remain }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_wednesday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_wednesday.count_2}}</td>
+                <td>{{ agg_by_reg.material_wednesday.count_my_2 }}</td>
+                <td>{{ agg_by_reg.material_wednesday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_wednesday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_wednesday.count_3}}</td>
+                <td>{{ agg_by_reg.material_wednesday.count_my_3 }}</td>
+                <td>{{ agg_by_reg.material_wednesday.remain_3 }}</td>
             </tr>
 
             {% endfor %}
@@ -153,15 +205,20 @@
         <h4>Диковинки:</h4>
         <table>
             <tr>
-                <th>Название диковинки</th>
                 <th>Регион</th>
+                <th>Название диковинки</th>
                 <th>Кол-во</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
             </tr>
-            {% for material, count in aggregated.specialties.items %}
+            {% for agg in aggregated.specialties %}
             <tr>
-                <td>{{material.name}}</td>
-                <td>{{material.get_region_display}}</td>
-                <td>{{count}}</td>
+
+                <td>{{agg.specialty.get_region_display}}</td>
+                <td>{{agg.specialty.name}}</td>
+                <td>{{agg.count}}</td>
+                <td>{{agg.count_my}}</td>
+                <td>{{agg.remain}}</td>
             </tr>
             {% endfor %}
         </table>
@@ -175,29 +232,41 @@
                 <th>Редкость</th>
                 <th>Кол-во</th>
                 <th>Эквивалент материалов 1*</th>
+                <th>Моё кол-во</th>
+                <th>Осталось</th>
+                <th>Ост. эквивалент 1*</th>
             </tr>
             {% for element, agg in aggregated.stones.items %}
             <tr>
                 <td rowspan="4">{{ element }}</td>
-                <td>{{ agg.material_1 |default_if_none:'-' }}</td>
+                <td>{{ agg.material_1.name |default_if_none:'-' }}</td>
                 <td>1</td>
                 <td>{{ agg.count_1 }} шт.</td>
                 <td rowspan="4">{{ agg.equivalent }} шт.</td>
+                <td>{{ agg.count_my_1 }} шт.</td>
+                <td>{{ agg.remain_1 }} шт.</td>
+                <td rowspan="4">{{ agg.equivalent_remain }} шт.</td>
             </tr>
             <tr>
-                <td>{{ agg.material_2 |default_if_none:'-'}}</td>
+                <td>{{ agg.material_2.name |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{ agg.count_2 }} шт.</td>
+                <td>{{ agg.count_my_2 }} шт.</td>
+                <td>{{ agg.remain_2 }} шт.</td>
             </tr>
             <tr>
-                <td>{{ agg.material_3 |default_if_none:'-' }}</td>
+                <td>{{ agg.material_3.name |default_if_none:'-' }}</td>
                 <td>3</td>
                 <td>{{ agg.count_3 }} шт.</td>
+                <td>{{ agg.count_my_3 }} шт.</td>
+                <td>{{ agg.remain_3 }} шт.</td>
             </tr>
             <tr>
-                <td>{{ agg.material_4 |default_if_none:'-' }}</td>
+                <td>{{ agg.material_4.name |default_if_none:'-' }}</td>
                 <td>4</td>
                 <td>{{ agg.count_4 }} шт.</td>
+                <td>{{ agg.count_my_4 }} шт.</td>
+                <td>{{ agg.remain_4 }} шт.</td>
             </tr>
             {% endfor %}
 

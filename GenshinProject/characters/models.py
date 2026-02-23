@@ -240,3 +240,71 @@ class UserCharacter(models.Model):
         verbose_name_plural = 'Пользовательские персонажи'
 
 
+class UserInventory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inventory')
+
+    # Связь с конкретными моделями материалов
+    mob_material = models.ForeignKey('MobMaterial', on_delete=models.SET_NULL, null=True, blank=True)
+    boss_material = models.ForeignKey('BossMaterial', on_delete=models.SET_NULL, null=True, blank=True)
+    weekly_material = models.ForeignKey('WeeklyMaterial', on_delete=models.SET_NULL, null=True, blank=True)
+    talent_material = models.ForeignKey('TalentMaterial', on_delete=models.SET_NULL, null=True, blank=True)
+    stone = models.ForeignKey('Stone', on_delete=models.SET_NULL, null=True, blank=True)
+    specialty = models.ForeignKey('Specialty', on_delete=models.SET_NULL, null=True, blank=True)
+
+    count = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+    class Meta:
+        unique_together = ('user', 'mob_material', 'boss_material', 'weekly_material', 'talent_material', 'stone',
+                           'specialty')
+        verbose_name='Пользовательский материал'
+        verbose_name_plural='Пользовательский инвентарь'
+
+    def get_material_name(self):
+        """Для шаблона — название материала"""
+        if self.mob_material:
+            return self.mob_material.name
+        elif self.boss_material:
+            return self.boss_material.name
+        elif self.weekly_material:
+            return self.weekly_material.name
+        elif self.talent_material:
+            return self.talent_material.name
+        elif self.stone:
+            return self.stone.name
+        elif self.specialty:
+            return self.specialty.name
+
+        return "Неизвестно"
+
+    def get_material_type(self):
+        """Тип материала для группировки"""
+        if self.mob_material: return "MobMaterial"
+        if self.boss_material: return "BossMaterial"
+        if self.weekly_material: return "WeeklyMaterial"
+        if self.talent_material: return "TalentMaterial"
+        if self.stone: return "Stone"
+        if self.specialty: return "Specialty"
+        return "Unknown"
+
+    @classmethod
+    def get_material_count(cls, user: User, material) -> int:
+        """Получить количество материала в инвентаре пользователя"""
+        if isinstance(material, MobMaterial):
+            inv = cls.objects.filter(user=user, mob_material=material).first()
+        elif isinstance(material, BossMaterial):
+            inv = cls.objects.filter(user=user, boss_material=material).first()
+        elif isinstance(material, WeeklyMaterial):
+            inv = cls.objects.filter(user=user, weekly_material=material).first()
+        elif isinstance(material, TalentMaterial):
+            inv = cls.objects.filter(user=user, talent_material=material).first()
+        elif isinstance(material, Stone):
+            inv = cls.objects.filter(user=user, stone=material).first()
+        elif isinstance(material, Specialty):
+            inv = cls.objects.filter(user=user, specialty=material).first()
+        else:
+            return 0
+
+        return inv.count if inv else 0
+
+    def __str__(self):
+        return f"{self.get_material_name()} ({self.get_material_type()}) - {self.count} шт."
