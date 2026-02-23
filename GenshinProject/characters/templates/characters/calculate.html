@@ -9,124 +9,87 @@
         <h4>Материалы с мобов:</h4>
         <table>
             <tr>
-                <td>
-                    Название моба
-                </td>
-                <td>
-                    Название материала
-                </td>
-                <td>
-                    Редкость
-                </td>
-                <td>
-                    Количество
-                </td>
-                <td>
-                    Эквивалент материалов 1*
-                </td>
+                <th>Название моба</th>
+                <th>Название материала</th>
+                <th>Редкость</th>
+                <th>Кол-во</th>
+                <th>Эквивалент материалов 1*</th>
             </tr>
             {% for mob_name, agg in aggregated.mob_materials.items %}
             <tr>
-                <td rowspan="3">
-                    {{ mob_name }}
-                </td>
-                <td>
-                    {{ agg.material_1 }}
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    {{ agg.count_1 }} шт.
-                </td>
-                <td rowspan="3">
-                    {{ agg.equivalent }} шт.
-                </td>
-
+                <td rowspan="3">{{ mob_name }}</td>
+                <td>{{ agg.material_1 |default_if_none:'-' }}</td>
+                <td>1</td>
+                <td>{{ agg.count_1 }} шт.</td>
+                <td rowspan="3">{{ agg.equivalent }} шт.</td>
             </tr>
             <tr>
-
-                <td>
-                    {{ agg.material_2 }}
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    {{ agg.count_2 }} шт.
-                </td>
-
+                <td>{{ agg.material_2 |default_if_none:'-'}}</td>
+                <td>2</td>
+                <td>{{ agg.count_2 }} шт.</td>
             </tr>
             <tr>
-
-                <td>
-                    {{ agg.material_3 }}
-                </td>
-                <td>
-                    3
-                </td>
-                <td>
-                    {{ agg.count_3 }} шт.
-                </td>
-
+                <td>{{ agg.material_3 |default_if_none:'-' }}</td>
+                <td>3</td>
+                <td>{{ agg.count_3 }} шт.</td>
             </tr>
             {% endfor %}
 
         </table>
+
         <h4>Материалы с боссов:</h4>
         <table>
             <tr>
-                <td>
-                    Название босса
-                </td>
-                <td>
-                    Название материала
-                </td>
-                <td>
-                    Количество
-                </td>
+                <th>Название босса</th>
+                <th>Название материала</th>
+                <th>Кол-во</th>
             </tr>
-            {% for material, count in materials.boss_materials.items %}
+            {% for material, count in aggregated.boss_materials.items %}
             <tr>
-                <td>
-                    {{material.boss_name}}
-                </td>
-                <td>
-                    {{material.name}}
-                </td>
-                <td>
-                    {{count}}
-                </td>
+                <td>{{material.boss_name}}</td>
+                <td>{{material.name}}</td>
+                <td>{{count}}</td>
             </tr>
             {% endfor %}
         </table>
-        <h4>Еженедельные материалы:</h4>
-        {{materials.weekly_materials}}
 
-        <h4>Материалы талантов:</h4>
+        <h4>Еженедельные материалы:</h4>
         <table>
             <tr>
-                <td>
-                    Регион
-                </td>
-                <td>
-                    День недели
-                </td>
-                <td>
-                    Название материала
-                </td>
-                <td>
-                    Редкость
-                </td>
-                <td>
-                    Количество
-                </td>
-                <td>
-                    Эквивалент материалов 1*
-                </td>
-                <td>
-                    Эквивалент материалов 1*
-                </td>
+                <th>Название босса</th>
+                <th>Название материала</th>
+                <th>Кол-во</th>
+                <th>Эквивалент материалов</th>
+            </tr>
+            {% for boss_name, agg in aggregated.weekly_materials.items %}
+            <tr>
+                <td rowspan="3">{{ boss_name }}</td>
+                <td>{{ agg.material_1 |default_if_none:'-' }}</td>
+                <td>{{ agg.count_1 }} шт.</td>
+                <td rowspan="3">{{ agg.equivalent }} шт.</td>
+            </tr>
+            <tr>
+                <td>{{ agg.material_2 |default_if_none:'-'}}</td>
+                <td>{{ agg.count_2 }} шт.</td>
+            </tr>
+            <tr>
+                <td>{{ agg.material_3 |default_if_none:'-' }}</td>
+                <td>{{ agg.count_3 }} шт.</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+        <h4>Материалы талантов:</h4>
+        <table class="talent-table">
+            <tr>
+                <th>Регион</th>
+                <th>День недели</th>
+                <th>Название материала</th>
+                <th>Редкость</th>
+                <th>Кол-во</th>
+                <th>Эквивалент материалов 1*</th>
+                <th>Эквивалент материалов 1*</th>
             </tr>
             {% for reg, agg_by_reg in aggregated.talent_materials.items %}
             <tr>
@@ -190,33 +153,55 @@
         <h4>Диковинки:</h4>
         <table>
             <tr>
-                <td>
-                    Название диковинки
-                </td>
-                <td>
-                    Регион
-                </td>
-                <td>
-                    Количество
-                </td>
+                <th>Название диковинки</th>
+                <th>Регион</th>
+                <th>Кол-во</th>
             </tr>
-            {% for material, count in materials.specialties.items %}
+            {% for material, count in aggregated.specialties.items %}
             <tr>
-                <td>
-                    {{material.name}}
-                </td>
-                <td>
-                    {{material.region}}
-                </td>
-                <td>
-                    {{count}}
-                </td>
+                <td>{{material.name}}</td>
+                <td>{{material.get_region_display}}</td>
+                <td>{{count}}</td>
             </tr>
             {% endfor %}
         </table>
 
         <h4>Камни:</h4>
-        {{materials.stones}}
+
+        <table>
+            <tr>
+                <th>Элемент</th>
+                <th>Название материала</th>
+                <th>Редкость</th>
+                <th>Кол-во</th>
+                <th>Эквивалент материалов 1*</th>
+            </tr>
+            {% for element, agg in aggregated.stones.items %}
+            <tr>
+                <td rowspan="4">{{ element }}</td>
+                <td>{{ agg.material_1 |default_if_none:'-' }}</td>
+                <td>1</td>
+                <td>{{ agg.count_1 }} шт.</td>
+                <td rowspan="4">{{ agg.equivalent }} шт.</td>
+            </tr>
+            <tr>
+                <td>{{ agg.material_2 |default_if_none:'-'}}</td>
+                <td>2</td>
+                <td>{{ agg.count_2 }} шт.</td>
+            </tr>
+            <tr>
+                <td>{{ agg.material_3 |default_if_none:'-' }}</td>
+                <td>3</td>
+                <td>{{ agg.count_3 }} шт.</td>
+            </tr>
+            <tr>
+                <td>{{ agg.material_4 |default_if_none:'-' }}</td>
+                <td>4</td>
+                <td>{{ agg.count_4 }} шт.</td>
+            </tr>
+            {% endfor %}
+
+        </table>
     </div>
     <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
 </div>

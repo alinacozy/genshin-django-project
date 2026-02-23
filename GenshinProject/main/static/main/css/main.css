@@ -75,3 +75,46 @@ form {
     display: flex;
     margin-left: 0%;
 }
+
+/* Стили для всех таблиц */
+table {
+    border-collapse: collapse;
+    margin: 20px auto;  /* Центрирует таблицу в блоке */
+    width: 90%;
+    background: #FFF1FC;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 1px solid #000;  /* Тонкие черные границы */
+    padding: 12px 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    background: #AA336A;
+    color: white;
+    font-weight: normal;
+}
+
+
+tr:hover {
+    background: #FFC1CC;  /* Подсветка при наведении */
+}
+
+.talent-table {
+    table-layout: fixed;
+}
+
+.talent-table td:nth-child(2),
+.talent-table th:nth-child(2) { width: 10%; }
+
+.talent-table td:nth-child(3),
+.talent-table th:nth-child(3) { width: 30%; }
+
+.talent-table td:nth-child(4),
+.talent-table th:nth-child(4) { width: 9%; }
+
+.talent-table td:nth-child(5),
+.talent-table th:nth-child(5) { width: 9%; }
