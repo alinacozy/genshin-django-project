@@ -410,10 +410,13 @@ function getCookie(name) {
 document.addEventListener('DOMContentLoaded', function() {
     const savedY = sessionStorage.getItem('materialsScrollY');
     if (savedY !== null) {
-        setTimeout(() => {
-            window.scrollTo(0, parseInt(savedY));
-            sessionStorage.removeItem('materialsScrollY');
-        }, 100); // Небольшая задержка для полной загрузки
+        // МГНОВЕННЫЙ скролл БЕЗ анимации
+        window.scrollTo({
+            top: parseInt(savedY),
+            left: 0,
+            behavior: 'instant'
+        });
+        sessionStorage.removeItem('materialsScrollY');
     }
 
     document.querySelectorAll('.editable-count').forEach(cell => {
