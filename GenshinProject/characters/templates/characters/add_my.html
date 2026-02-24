@@ -1,0 +1,63 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Форма по добавлению нового персонажа {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Форма по добавлению своего персонажа</h1>
+    <a class="btn btn-info" href="{% url 'add_planned_character' %}">Получить персонажа из планов</a>
+    <a class="btn btn-info" href="{% url 'add_plan_character' %}">Добавить планируемого персонажа</a>
+    <p>Здесь вы можете добавить персонажа, которого вы уже получили, и который ранее не был у вас в планах.</p>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group {% if field.name == 'is_ascended' %}ascended-field{% endif %}">
+                <label>{{ field.label }}</label>
+                {{ field }}<br>
+                {% if field.errors %}
+                    <small class="text-danger">{{ field.errors }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </form>
+    <span>{{ error }}</span>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Находим поле уровня и галочку
+    const levelField = document.querySelector('input[name="level"], select[name="level"]');
+    const ascendedFields = document.querySelectorAll('.ascended-field');
+
+    // Уровни возвышения
+    const ascensionLevels = [20, 40, 50, 60, 70, 80];
+
+    function toggleAscended() {
+        const levelValue = parseInt(levelField.value);
+
+        ascendedFields.forEach(function(fieldDiv) {
+            if (ascensionLevels.includes(levelValue)) {
+                // ПОКАЗЫВАЕМ галочку
+                fieldDiv.style.display = 'block';
+            } else {
+                // СПРАТЫВАЕМ галочку и сбрасываем значение
+                fieldDiv.style.display = 'none';
+                const checkbox = fieldDiv.querySelector('input[name="is_ascended"]');
+                if (checkbox) {
+                    checkbox.checked = false;  // ставим False
+                }
+            }
+        });
+    }
+
+    // Запускаем при загрузке и изменении уровня
+    if (levelField) {
+        levelField.addEventListener('change', toggleAscended);
+        levelField.addEventListener('input', toggleAscended);
+        toggleAscended();  // проверяем сразу
+    }
+});
+</script>
+
+{% endblock %}

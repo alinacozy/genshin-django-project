@@ -5,7 +5,25 @@
 {% block content %}
 <div class="tables-container">
     <h3>Такие материалы нужны, чтобы прокачать моих персонажей</h3>
+
+
+    <div class="filter-checkbox">
+        <label class="checkbox-label">
+            <input type="checkbox" id="onlyObtained" name="only_obtained" {% if request.GET.only_obtained == '1' %}checked{% endif %}>
+            <span class="checkmark"></span>
+            Рассчитать только полученных персонажей
+        </label>
+    </div>
+
+
+    <p style="text-align: left">* Чтобы отредактировать количество своих материалов: <br>
+            1. кликните на цифру в ячейке "Моё кол-во",<br>
+            2. введите новое значение<br>
+            3. кликните на любое другое место<br>
+            - и изменения сохранятся в базе!)</p>
+
     <div>
+
         <div class="table-nav">
             <a href="#mobs" class="nav-btn">Мобы</a>
             <a href="#bosses" class="nav-btn">Боссы</a>
@@ -447,6 +465,17 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         });
     });
+});
+
+
+document.getElementById('onlyObtained').addEventListener('change', function() {
+    const url = new URL(window.location);
+    if (this.checked) {
+        url.searchParams.set('only_obtained', '1');
+    } else {
+        url.searchParams.delete('only_obtained');
+    }
+    window.location.href = url.toString();
 });
 </script>
 

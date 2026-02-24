@@ -1,7 +1,8 @@
 from collections import defaultdict
 import dataclasses
+from django.db.models import QuerySet
 
-from ..models import MobMaterial
+from ..models import MobMaterial, UserCharacter, Character
 
 
 @dataclasses.dataclass
@@ -28,11 +29,32 @@ class RequiredMaterials:
 
 class MaterialsCalculator:
 
-    def calculate_all(self, characters) -> RequiredMaterials:
+    def calculate_all(self, characters: QuerySet[UserCharacter, UserCharacter], only_obtained: bool) -> RequiredMaterials:
         total = RequiredMaterials()
+
         for char in characters:
             char_mats = self.calculate_character(char)
             total.merge_with(char_mats)
+
+        if not only_obtained:
+            # 2. ДОБАВЛЯЕМ ВСЕХ ОСТАЛЬНЫХ персонажей (уровни 1→9, таланты 1,1,1→9,9,9)
+            all_characters = Character.objects.all()
+            user_character_names = set(characters.values_list('name__id', flat=True))
+
+            for char in all_characters:
+                if char.id not in user_character_names:
+                    # Создаём виртуального UserCharacter
+                    virtual_char = UserCharacter(
+                        name=char,
+                        level=1,  # Текущий уровень
+                        is_ascended=False,
+                        talent_levels=[1, 1, 1],  # Уровни талантов
+                        target_talent_levels=[9, 9, 9],  # Целевые уровни талантов
+                        user=None  # без пользователя
+                    )
+                    virtual_mats = self.calculate_character(virtual_char)
+                    total.merge_with(virtual_mats)
+
         return total
 
     def calculate_character(self, user_character) -> RequiredMaterials:

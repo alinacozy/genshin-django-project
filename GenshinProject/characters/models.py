@@ -240,6 +240,36 @@ class UserCharacter(models.Model):
         verbose_name_plural = 'Пользовательские персонажи'
 
 
+
+class PlannedCharacter(models.Model):
+    """Планируемый, но неполученный персонаж"""
+    name = models.ForeignKey("Character", verbose_name="Имя",
+                                        on_delete=models.PROTECT, null=True)
+    level = 1
+    is_ascended = False
+    talent_levels = [1, 1, 1]
+    target_talent_levels = models.JSONField(default=list, verbose_name='Целевые уровни талантов')
+    user = models.ForeignKey(User, verbose_name="Пользователь",
+                                        on_delete=models.CASCADE, null=True)
+
+    def get_target_talent_levels(self):
+        """Получить целевые уровни как список"""
+        return self.target_talent_levels or []
+
+    def set_target_talent_levels(self, levels):
+        """Установить целевые уровни [normal, skill, burst]"""
+        if len(levels) != 3:
+            raise ValueError("Нужно ровно 3 числа (1-10)")
+        self.target_talent_levels = [max(1, min(10, int(x))) for x in levels]
+
+    def __str__(self):
+        return f"{self.name} (не получен)"
+
+    class Meta:
+        verbose_name = 'Планируемый персонаж'
+        verbose_name_plural = 'Планируемые персонажи'
+
+
 class UserInventory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inventory')
 

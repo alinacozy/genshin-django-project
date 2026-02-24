@@ -60,7 +60,7 @@ main {
 
 main .features {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 10px;
 }
 
 main .tables-container {
@@ -134,7 +134,7 @@ main .features h3 {
 form {
     margin-left:25%;
     width:500px;
-    margin-top:50px;
+    margin-top:20px;
 }
 
 .profile-winky {
@@ -227,4 +227,60 @@ tr:hover {
     min-width: 40px;            /* минимальная ширина */
     max-width: 40px;            /* фиксируем ширину */
     padding: 5px 0;             /* отступы сверху/снизу, но не по бокам */
+}
+
+
+
+.filter-checkbox {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    background: #FFF1FC;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid #AA336A;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover {
+    background: #AA336A;
+    color: white;
+    transform: scale(1.02);
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #AA336A;
+    border-radius: 4px;
+    margin-right: 12px;
+    position: relative;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+#onlyObtained:checked + .checkmark {
+    background: #AA336A;
+}
+
+#onlyObtained:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#onlyObtained {
+    display: none;
 }

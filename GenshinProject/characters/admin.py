@@ -4,6 +4,7 @@ from .models import *
 admin.site.register(Character)
 admin.site.register(WeeklyMaterial)
 admin.site.register(UserCharacter)
+admin.site.register(PlannedCharacter)
 admin.site.register(BossMaterial)
 admin.site.register(TalentMaterial)
 admin.site.register(Specialty)

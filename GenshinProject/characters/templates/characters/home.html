@@ -5,6 +5,7 @@
 {% block content %}
 <div class="features">
     <h1>Список всех персонажей</h1>
+    <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
     {% for ch in characters %}
         <div class="alert alert-warning">
             <h3>{{ ch.name }}</h3>
@@ -12,6 +13,5 @@
             <p>{{ch.get_region_display}}</p>
         </div>
     {% endfor %}
-    <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
 </div>
 {% endblock %}

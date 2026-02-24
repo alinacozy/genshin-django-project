@@ -5,14 +5,222 @@
 {% block content %}
 <div class="features">
     <h1>Мои персонажи</h1>
+    <a class="btn btn-info" href="{% url 'add_my_character' %}">Добавить персонажа</a>
+    <a class="btn btn-info" href="{% url 'calculate' %}"> В калькулятор </a>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Уровень</th>
+            <th>Возвышен</th>
+            <th colspan="3">Уровни талантов</th>
+            <th colspan="3">Целевые уровни талантов</th>
+            <th>Получен</th>
+            <th>Докачан</th>
+        </tr>
     {% for ch in characters %}
-        <div class="alert alert-warning">
-            <h3>{{ ch.name }}</h3>
-            <p>Уровень: {{ch.level}}</p>
-            <p>Уровни талантов: {{ch.talent_levels}}</p>
-            <p>Целевые уровни талантов: {{ch.target_talent_levels}}</p>
-        </div>
+        <tr>
+            <td>{{ ch.name }}</td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="level"
+                contenteditable="true">
+                {{ch.level}}
+            </td>
+            <td>
+                <input type="checkbox"
+                       class="editable-checkbox"
+                       data-character-type="usercharacter"
+                       data-character-id="{{ ch.id }}"
+                       data-field="is_ascended"
+                       {% if ch.is_ascended %}checked{% endif %}>
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="talent_normal"
+                contenteditable="true">
+                {{ch.talent_levels.0}}
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="talent_skill"
+                contenteditable="true">
+                {{ch.talent_levels.1}}
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="talent_burst"
+                contenteditable="true">
+                {{ch.talent_levels.2}}
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_normal"
+                contenteditable="true">
+                {{ch.target_talent_levels.0}}
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_skill"
+                contenteditable="true">
+                {{ch.target_talent_levels.1}}
+            </td>
+            <td class="editable-count"
+                data-character-type="usercharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_burst"
+                contenteditable="true">
+                {{ch.target_talent_levels.2}}
+            </td>
+
+            <td>Да</td>
+            <td>
+                {% if ch.level == 90 and ch.target_talent_levels.0 == ch.talent_levels.0 and ch.target_talent_levels.1 == ch.talent_levels.1 and ch.target_talent_levels.2 == ch.talent_levels.2 %}
+                Да
+                {% else %}
+                Нет
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
-    <a class="btn btn-warning" href="{% url 'calculate' %}">{% filter upper %} В калькулятор {% endfilter %}</a>
+
+
+        {% for ch in plans %}
+        <tr>
+            <td>{{ ch.name }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td class="editable-count"
+                data-character-type="plannedcharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_normal"
+                contenteditable="true">
+                {{ch.target_talent_levels.0}}
+            </td>
+            <td class="editable-count"
+                data-character-type="plannedcharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_skill"
+                contenteditable="true">
+                {{ch.target_talent_levels.1}}
+            </td>
+            <td class="editable-count"
+                data-character-type="plannedcharacter"
+                data-character-id="{{ ch.id }}"
+                data-field="target_burst"
+                contenteditable="true">
+                {{ch.target_talent_levels.2}}
+            </td>
+
+            <td>Нет</td>
+            <td>Нет</td>
+        </tr>
+    {% endfor %}
+    </table>
+
 </div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    // ОБРАБОТЧИК ДЛЯ ПЕРСОНАЖЕЙ
+document.querySelectorAll('.editable-count[data-character-type]').forEach(cell => {
+    cell.addEventListener('blur', function() {
+        const newValue = Math.max(1, Math.min(90, parseInt(this.textContent) || 1)); // 1-90 для level
+        const characterType = this.dataset.characterType;
+        const characterId = this.dataset.characterId;
+        const field = this.dataset.field;
+
+        // СОХРАНЯЕМ СКРОЛЛ
+        sessionStorage.setItem('charactersScrollY', window.scrollY.toString());
+
+        fetch('/characters/update-character/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                character_type: characterType,
+                character_id: characterId,
+                field: field,
+                value: newValue
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
+// ВОССТАНАВЛИВАЕМ СКРОЛЛ ДЛЯ ЭТОЙ СТРАНИЦЫ
+if (sessionStorage.getItem('charactersScrollY')) {
+    window.scrollTo({
+        top: parseInt(sessionStorage.getItem('charactersScrollY')),
+        left: 0,
+        behavior: 'instant'
+    });
+    sessionStorage.removeItem('charactersScrollY');
+}
+
+
+
+    // ← ДОБАВЬ ПОСЛЕ обработчика editable-count
+document.querySelectorAll('.editable-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const newValue = this.checked ? 1 : 0;  // true=1, false=0
+        const characterType = this.dataset.characterType;
+        const characterId = this.dataset.characterId;
+        const field = this.dataset.field;
+
+        sessionStorage.setItem('charactersScrollY', window.scrollY.toString());
+
+        fetch('/characters/update-character/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                character_type: characterType,
+                character_id: characterId,
+                field: field,
+                value: newValue
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
+
+
+</script>
 {% endblock %}

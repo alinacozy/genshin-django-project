@@ -1,0 +1,28 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} Форма по добавлению нового персонажа {% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Форма по добавлению планируемого персонажа</h1>
+    <a class="btn btn-info" href="{% url 'add_planned_character' %}">Получить персонажа из планов</a>
+    <a class="btn btn-info" href="{% url 'add_my_character' %}">Добавить полученного персонажа</a>
+    <p>Здесь вы можете добавить персонажа, которого у вас пока нет, и целевые уровни для него.</p>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group {% if field.name == 'is_ascended' %}ascended-field{% endif %}">
+                <label>{{ field.label }}</label>
+                {{ field }}<br>
+                {% if field.errors %}
+                    <small class="text-danger">{{ field.errors }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button class="btn btn-success" type="submit">Добавить</button>
+    </form>
+    <span>{{ error }}</span>
+</div>
+
+
+{% endblock %}
