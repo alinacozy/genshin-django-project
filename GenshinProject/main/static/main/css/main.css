@@ -106,10 +106,6 @@ main .tables-container {
     transform: scale(0.98);
 }
 
-/* Плавная прокрутка */
-html {
-    scroll-behavior: smooth;
-}
 
 /* Активная кнопка навигации */
 .table-nav a[href="#mobs"]:target,

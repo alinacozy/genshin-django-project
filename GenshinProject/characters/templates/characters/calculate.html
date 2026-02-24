@@ -406,13 +406,24 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Универсальный обработчик для ВСЕХ таблиц
+// ВОССТАНАВЛИВАЕМ позицию скролла при загрузке
 document.addEventListener('DOMContentLoaded', function() {
+    const savedY = sessionStorage.getItem('materialsScrollY');
+    if (savedY !== null) {
+        setTimeout(() => {
+            window.scrollTo(0, parseInt(savedY));
+            sessionStorage.removeItem('materialsScrollY');
+        }, 100); // Небольшая задержка для полной загрузки
+    }
+
     document.querySelectorAll('.editable-count').forEach(cell => {
         cell.addEventListener('blur', function() {
             const newCount = Math.max(0, parseInt(this.textContent) || 0);
             const materialType = this.dataset.materialType;
             const materialId = this.dataset.materialId;
+
+            // СОХРАНЯЕМ ТЕКУЩУЮ позицию скролла
+            sessionStorage.setItem('materialsScrollY', window.scrollY.toString());
 
             fetch('/characters/inventory/update/', {
                 method: 'POST',
@@ -428,14 +439,13 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
-                location.reload();
+                location.reload(); // Перезагружаем, но вернемся на место
             })
             .catch(error => console.error('Error:', error));
         });
     });
 });
-
-
 </script>
+
 
 {% endblock %}

@@ -266,7 +266,6 @@ class MaterialsAggregator:
                         weekly_materials.get(padded[2], 0)
                 ),
             )
-        print(result)
         result = dict(sorted(result.items(), key=lambda item: item[1].equivalent_remain, reverse=True))
         return result
 
