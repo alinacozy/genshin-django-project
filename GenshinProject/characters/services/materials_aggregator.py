@@ -374,5 +374,5 @@ class MaterialsAggregator:
                         stones.get(materials_by_rarity.get(2))
                 ),
             )
-        result = dict(sorted(result.items(), key=lambda item: item[1].equivalent, reverse=True))
+        result = dict(sorted(result.items(), key=lambda item: item[1].equivalent_remain, reverse=True))
         return result

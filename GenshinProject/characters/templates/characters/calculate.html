@@ -3,10 +3,21 @@
 {% block title %} Подсчет материалов {% endblock %}
 
 {% block content %}
-<div class="features">
+<div class="tables-container">
     <h3>Такие материалы нужны, чтобы прокачать моих персонажей</h3>
     <div>
-        <h4>Материалы с мобов:</h4>
+        <div class="table-nav">
+            <a href="#mobs" class="nav-btn">Мобы</a>
+            <a href="#bosses" class="nav-btn">Боссы</a>
+            <a href="#weekly" class="nav-btn">Еженедельные</a>
+            <a href="#talents" class="nav-btn">Таланты</a>
+            <a href="#specialties" class="nav-btn">Диковинки</a>
+            <a href="#stones" class="nav-btn">Камни</a>
+        </div>
+
+        <div class="tables-wrapper">
+        <h4 id="mobs">Материалы с мобов:</h4>
+
         <table>
             <tr>
                 <th>Название моба</th>
@@ -23,33 +34,48 @@
                 <td rowspan="3">{{ mob_name }}</td>
                 <td>{{ agg.material_1 |default_if_none:'-' }}</td>
                 <td>1</td>
-                <td>{{ agg.count_1 }} шт.</td>
-                <td rowspan="3">{{ agg.equivalent }} шт.</td>
-                <td>{{ agg.count_my_1 }} шт.</td>
-                <td>{{ agg.remain_1 }} шт.</td>
-                <td rowspan="3">{{ agg.equivalent_remain }} шт.</td>
+                <td>{{ agg.count_1 }} </td>
+                <td rowspan="3">{{ agg.equivalent }} </td>
+                <td class="editable-count"
+                    data-material-type="mob_material"
+                    data-material-id="{{ agg.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_1 }}
+                </td>
+                <td>{{ agg.remain_1 }} </td>
+                <td rowspan="3">{{ agg.equivalent_remain }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
-                <td>{{ agg.count_2 }} шт.</td>
+                <td>{{ agg.count_2 }} </td>
 
-                <td>{{ agg.count_my_2 }} шт.</td>
-                <td>{{ agg.remain_2 }} шт.</td>
+                <td class="editable-count"
+                    data-material-type="mob_material"
+                    data-material-id="{{ agg.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_2 }}
+                </td>
+                <td>{{ agg.remain_2 }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_3 |default_if_none:'-' }}</td>
                 <td>3</td>
-                <td>{{ agg.count_3 }} шт.</td>
+                <td>{{ agg.count_3 }} </td>
 
-                <td>{{ agg.count_my_3 }} шт.</td>
-                <td>{{ agg.remain_3 }} шт.</td>
+                <td class="editable-count"
+                    data-material-type="mob_material"
+                    data-material-id="{{ agg.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_3 }}
+                </td>
+                <td>{{ agg.remain_3 }} </td>
             </tr>
             {% endfor %}
 
         </table>
 
-        <h4>Материалы с боссов:</h4>
+        <h4 id="bosses">Материалы с боссов:</h4>
         <table>
             <tr>
                 <th>Название босса</th>
@@ -63,13 +89,18 @@
                 <td>{{agg.boss_material.boss_name}}</td>
                 <td>{{agg.boss_material.name}}</td>
                 <td>{{agg.count}}</td>
-                <td>{{agg.count_my}}</td>
+                <td class="editable-count"
+                    data-material-type="boss_material"
+                    data-material-id="{{ agg.boss_material.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my }}
+                </td>
                 <td>{{agg.remain}}</td>
             </tr>
             {% endfor %}
         </table>
 
-        <h4>Еженедельные материалы:</h4>
+        <h4 id="weekly">Еженедельные материалы:</h4>
         <table>
             <tr>
                 <th>Название босса</th>
@@ -78,35 +109,50 @@
                 <th>Эквивалент материалов</th>
                 <th>Моё кол-во</th>
                 <th>Осталось</th>
-                <th>Оставшийся эквивалент 1*</th>
+                <th>Оставшийся эквивалент</th>
             </tr>
             {% for boss_name, agg in aggregated.weekly_materials.items %}
             <tr>
                 <td rowspan="3">{{ boss_name }}</td>
                 <td>{{ agg.material_1 |default_if_none:'-' }}</td>
-                <td>{{ agg.count_1 }} шт.</td>
-                <td rowspan="3">{{ agg.equivalent }} шт.</td>
-                <td>{{ agg.count_my_1 }} шт.</td>
-                <td>{{ agg.remain_1 }} шт.</td>
-                <td rowspan="3">{{ agg.equivalent_remain }} шт.</td>
+                <td>{{ agg.count_1 }} </td>
+                <td rowspan="3">{{ agg.equivalent }} </td>
+                <td class="editable-count"
+                    data-material-type="weekly_material"
+                    data-material-id="{{ agg.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_1 }}
+                </td>
+                <td>{{ agg.remain_1 }} </td>
+                <td rowspan="3">{{ agg.equivalent_remain }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_2 |default_if_none:'-'}}</td>
-                <td>{{ agg.count_2 }} шт.</td>
-                <td>{{ agg.count_my_2 }} шт.</td>
-                <td>{{ agg.remain_2 }} шт.</td>
+                <td>{{ agg.count_2 }} </td>
+                <td class="editable-count"
+                    data-material-type="weekly_material"
+                    data-material-id="{{ agg.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_2 }}
+                </td>
+                <td>{{ agg.remain_2 }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_3 |default_if_none:'-' }}</td>
-                <td>{{ agg.count_3 }} шт.</td>
-                <td>{{ agg.count_my_3 }} шт.</td>
-                <td>{{ agg.remain_3 }} шт.</td>
+                <td>{{ agg.count_3 }} </td>
+                <td class="editable-count"
+                    data-material-type="weekly_material"
+                    data-material-id="{{ agg.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_3 }}
+                </td>
+                <td>{{ agg.remain_3 }} </td>
             </tr>
             {% endfor %}
 
         </table>
 
-        <h4>Материалы талантов:</h4>
+        <h4 id="talents">Материалы талантов:</h4>
         <table class="talent-table">
             <tr>
                 <th>Регион</th>
@@ -114,12 +160,10 @@
                 <th>Название материала</th>
                 <th>Редкость</th>
                 <th>Кол-во</th>
-                <th>Эквивалент 1*</th>
-                <th>Эквивалент 1*</th>
+                <th colspan="2">Эквивалент 1*</th>
                 <th>Моё кол-во</th>
-                <th>Осталось</th>
-                <th>Ост. эквивалент 1*</th>
-                <th>Ост. эквивалент 1*</th>
+                <th>Оста-лось</th>
+                <th colspan="2">Ост. эквивалент 1*</th>
             </tr>
             {% for reg, agg_by_reg in aggregated.talent_materials.items %}
             <tr>
@@ -130,7 +174,12 @@
                 <td>{{agg_by_reg.material_monday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_monday.equivalent}}</td>
                 <td rowspan="9">{{agg_by_reg.equivalent}}</td>
-                <td>{{ agg_by_reg.material_monday.count_my_1 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_monday.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_monday.count_my_1 }}
+                </td>
                 <td>{{ agg_by_reg.material_monday.remain_1 }}</td>
                 <td rowspan="3">{{ agg_by_reg.material_monday.equivalent_remain }}</td>
                 <td rowspan="9">{{ agg_by_reg.equivalent_remain }}</td>
@@ -139,14 +188,24 @@
                 <td>{{agg_by_reg.material_monday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_monday.count_2}}</td>
-                <td>{{ agg_by_reg.material_monday.count_my_2 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_monday.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_monday.count_my_2 }}
+                </td>
                 <td>{{ agg_by_reg.material_monday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_monday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_monday.count_3}}</td>
-                <td>{{ agg_by_reg.material_monday.count_my_3 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_monday.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_monday.count_my_3 }}
+                </td>
                 <td>{{ agg_by_reg.material_monday.remain_3 }}</td>
             </tr>
             <tr>
@@ -155,7 +214,12 @@
                 <td>1</td>
                 <td>{{agg_by_reg.material_tuesday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_tuesday.equivalent}}</td>
-                <td>{{ agg_by_reg.material_tuesday.count_my_1 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_tuesday.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_tuesday.count_my_1 }}
+                </td>
                 <td>{{ agg_by_reg.material_tuesday.remain_1 }}</td>
                 <td rowspan="3">{{ agg_by_reg.material_tuesday.equivalent_remain }}</td>
             </tr>
@@ -163,14 +227,24 @@
                 <td>{{agg_by_reg.material_tuesday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_tuesday.count_2}}</td>
-                <td>{{ agg_by_reg.material_tuesday.count_my_2 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_tuesday.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_tuesday.count_my_2 }}
+                </td>
                 <td>{{ agg_by_reg.material_tuesday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_tuesday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_tuesday.count_3}}</td>
-                <td>{{ agg_by_reg.material_tuesday.count_my_3 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_tuesday.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_tuesday.count_my_3 }}
+                </td>
                 <td>{{ agg_by_reg.material_tuesday.remain_3 }}</td>
             </tr>
             <tr>
@@ -179,7 +253,12 @@
                 <td>1</td>
                 <td>{{agg_by_reg.material_wednesday.count_1}}</td>
                 <td rowspan="3">{{agg_by_reg.material_wednesday.equivalent}}</td>
-                <td>{{ agg_by_reg.material_wednesday.count_my_1 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_wednesday.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_wednesday.count_my_1 }}
+                </td>
                 <td>{{ agg_by_reg.material_wednesday.remain_1 }}</td>
                 <td rowspan="3">{{ agg_by_reg.material_wednesday.equivalent_remain }}</td>
             </tr>
@@ -187,14 +266,24 @@
                 <td>{{agg_by_reg.material_wednesday.material_2 |default_if_none:'-'}}</td>
                 <td>2</td>
                 <td>{{agg_by_reg.material_wednesday.count_2}}</td>
-                <td>{{ agg_by_reg.material_wednesday.count_my_2 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_wednesday.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_wednesday.count_my_2 }}
+                </td>
                 <td>{{ agg_by_reg.material_wednesday.remain_2 }}</td>
             </tr>
             <tr>
                 <td>{{agg_by_reg.material_wednesday.material_3 |default_if_none:'-'}}</td>
                 <td>3</td>
                 <td>{{agg_by_reg.material_wednesday.count_3}}</td>
-                <td>{{ agg_by_reg.material_wednesday.count_my_3 }}</td>
+                <td class="editable-count"
+                    data-material-type="talent_material"
+                    data-material-id="{{ agg_by_reg.material_wednesday.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg_by_reg.material_wednesday.count_my_3 }}
+                </td>
                 <td>{{ agg_by_reg.material_wednesday.remain_3 }}</td>
             </tr>
 
@@ -202,7 +291,7 @@
 
         </table>
 
-        <h4>Диковинки:</h4>
+        <h4 id="specialties">Диковинки:</h4>
         <table>
             <tr>
                 <th>Регион</th>
@@ -217,13 +306,18 @@
                 <td>{{agg.specialty.get_region_display}}</td>
                 <td>{{agg.specialty.name}}</td>
                 <td>{{agg.count}}</td>
-                <td>{{agg.count_my}}</td>
+                <td class="editable-count"
+                    data-material-type="specialty"
+                    data-material-id="{{ agg.specialty.id }}"
+                    contenteditable="true">
+                    {{agg.count_my}}
+                </td>
                 <td>{{agg.remain}}</td>
             </tr>
             {% endfor %}
         </table>
 
-        <h4>Камни:</h4>
+        <h4 id="stones">Камни:</h4>
 
         <table>
             <tr>
@@ -241,37 +335,107 @@
                 <td rowspan="4">{{ element }}</td>
                 <td>{{ agg.material_1.name |default_if_none:'-' }}</td>
                 <td>1</td>
-                <td>{{ agg.count_1 }} шт.</td>
-                <td rowspan="4">{{ agg.equivalent }} шт.</td>
-                <td>{{ agg.count_my_1 }} шт.</td>
-                <td>{{ agg.remain_1 }} шт.</td>
-                <td rowspan="4">{{ agg.equivalent_remain }} шт.</td>
+                <td>{{ agg.count_1 }} </td>
+                <td rowspan="4">{{ agg.equivalent }} </td>
+                <td class="editable-count"
+                    data-material-type="stone"
+                    data-material-id="{{ agg.material_1.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_1 }} 
+                </td>
+                <td>{{ agg.remain_1 }} </td>
+                <td rowspan="4">{{ agg.equivalent_remain }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_2.name |default_if_none:'-'}}</td>
                 <td>2</td>
-                <td>{{ agg.count_2 }} шт.</td>
-                <td>{{ agg.count_my_2 }} шт.</td>
-                <td>{{ agg.remain_2 }} шт.</td>
+                <td>{{ agg.count_2 }} </td>
+                <td class="editable-count"
+                    data-material-type="stone"
+                    data-material-id="{{ agg.material_2.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_2 }} 
+                </td>
+                <td>{{ agg.remain_2 }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_3.name |default_if_none:'-' }}</td>
                 <td>3</td>
-                <td>{{ agg.count_3 }} шт.</td>
-                <td>{{ agg.count_my_3 }} шт.</td>
-                <td>{{ agg.remain_3 }} шт.</td>
+                <td>{{ agg.count_3 }} </td>
+                <td class="editable-count"
+                    data-material-type="stone"
+                    data-material-id="{{ agg.material_3.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_3 }} 
+                </td>
+                <td>{{ agg.remain_3 }} </td>
             </tr>
             <tr>
                 <td>{{ agg.material_4.name |default_if_none:'-' }}</td>
                 <td>4</td>
-                <td>{{ agg.count_4 }} шт.</td>
-                <td>{{ agg.count_my_4 }} шт.</td>
-                <td>{{ agg.remain_4 }} шт.</td>
+                <td>{{ agg.count_4 }} </td>
+                <td class="editable-count"
+                    data-material-type="stone"
+                    data-material-id="{{ agg.material_4.id }}"
+                    contenteditable="true">
+                    {{ agg.count_my_4 }}
+                </td>
+                <td>{{ agg.remain_4 }} </td>
             </tr>
             {% endfor %}
 
         </table>
+        </div>
     </div>
     <a class="btn btn-warning" href="{% url 'my_characters' %}">{% filter upper %} К моим персонажам {% endfilter %}</a>
 </div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Универсальный обработчик для ВСЕХ таблиц
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.editable-count').forEach(cell => {
+        cell.addEventListener('blur', function() {
+            const newCount = Math.max(0, parseInt(this.textContent) || 0);
+            const materialType = this.dataset.materialType;
+            const materialId = this.dataset.materialId;
+
+            fetch('/characters/inventory/update/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    material_type: materialType,
+                    material_id: materialId,
+                    count: newCount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+
+</script>
+
 {% endblock %}

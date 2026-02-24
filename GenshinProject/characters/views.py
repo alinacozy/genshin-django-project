@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Character, UserCharacter
+from .models import Character, UserCharacter, UserInventory
 from .forms import CharacterForm, UserCharacterForm
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .services.materials_aggregator import MaterialsAggregator
 from .services.materials_calculator import MaterialsCalculator
@@ -83,3 +87,28 @@ def add_my_character(request):
         'error':error
     }
     return render(request, 'characters/create.html', data)
+
+
+
+@login_required
+@csrf_exempt
+def update_inventory_api(request):
+    print("REQUEST BODY:", request.body)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        count = max(0, int(data['count']))  # Валидация
+        material_type = data['material_type']
+        material_id = data['material_id']
+
+        # UserInventory.get_or_create + update count
+        inv, created = UserInventory.objects.get_or_create(
+            user=request.user,
+            **{material_type + '_id': material_id},
+            defaults={'count': count}
+        )
+        if not created:
+            inv.count = count
+            inv.save()
+
+        return JsonResponse({'status': 'ok', 'count': count})
+

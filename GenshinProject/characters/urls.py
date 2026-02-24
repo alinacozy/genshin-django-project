@@ -8,4 +8,6 @@ urlpatterns = [
     path('calculate/', views.calculate, name='calculate' ),
     path('my/', views.my_characters, name='my_characters' ),
     path('add_my/', views.add_my_character, name='add_my_character' ),
+    path('inventory/update/', views.update_inventory_api, name='update_inventory'),
+
 ]
